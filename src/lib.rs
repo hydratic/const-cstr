@@ -141,17 +141,19 @@ impl ConstCStr {
 /// Remember that functions consuming a C-string will only see up to the first NUL byte.
 #[macro_export]
 macro_rules! const_cstr {
-    ($(pub $strname:ident = $strval:expr);+;) => (
+    ($(mut $strname:ident = $strval:expr);+;) => (
         $(
-            pub const $strname: $crate::ConstCStr = const_cstr!($strval);
+            static mut $strname: $crate::ConstCStr = const_cstr!($strval);
         )+
     );
+    
     ($strval:expr) => (
         $crate::ConstCStr { val: concat!($strval, "\0") }
     );
+    // TODO: Is the above needed?
     ($($strname:ident = $strval:expr);+;) => (
         $(
-            const $strname: $crate::ConstCStr = const_cstr!($strval);
+            static mut $strname: $crate::ConstCStr = const_cstr!($strval);
         )+
     );
 }
@@ -168,15 +170,9 @@ fn test_creates_valid_str() {
 }
 
 #[cfg(test)]
-mod test_creates_pub_str_mod {
+mod test_creates_mut_str_mod {
     const_cstr! {
-        pub FIRST = "first";
-        pub SECOND = "second";
+        mut FIRST = "first";
+        mut SECOND = "second";
     }
-}
-
-#[test]
-fn test_creates_pub_str() {
-    assert_eq!(test_creates_pub_str_mod::FIRST.to_str(), "first");
-    assert_eq!(test_creates_pub_str_mod::SECOND.to_str(), "second");
 }
