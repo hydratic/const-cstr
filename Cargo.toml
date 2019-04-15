@@ -1,7 +1,7 @@
 [package]
 name = "static-cstr"
 version = "0.1.0"
-authors = ["Austin Bonander <austin.bonander@gmail.com>"],
+authors = ["Austin Bonander <austin.bonander@gmail.com>"]
           ["Hayden Curfman <haydencurfman121@gmail.com>"]
 description = "Create mutable static C-compatible strings from Rust string literals."
 license = "MIT OR Apache-2.0"
