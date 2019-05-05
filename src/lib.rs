@@ -175,6 +175,11 @@ macro_rules! const_cstr {
             static mut $strname: $crate::ConstCStr = const_cstr!($strval);
         )+
     );
+    ($(pub mut $strname:ident = $strval:expr);+;) => (
+        $(
+            pub static mut $strname: $crate::ConstCStr = const_cstr!($strval);
+        )+
+    );	
 }
 
 #[test]
